@@ -5,9 +5,9 @@ PKG_RELEASE:=$(AUTORELEASE)
 
 PKG_SOURCE_URL:=https://git.codelinaro.org/clo/qsdk/oss/lklm/qca-nss-ecm.git
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2021-06-15
-PKG_SOURCE_VERSION:=34267065855d32f33264dc3054efb0e8103d627b
-PKG_MIRROR_HASH:=0917659d69c5f3e6067d6671b9393b4b2d6b6cd5a7bacf5e7d6cf842dc906eca
+PKG_SOURCE_DATE:=2022-06-03
+PKG_SOURCE_VERSION:=a063d80c7dbe34ac9d69f470887255c163271788
+PKG_MIRROR_HASH:=skip
 
 PKG_BUILD_PARALLEL:=1
 
@@ -47,7 +47,6 @@ define KernelPackage/qca-nss-ecm/install
 	$(INSTALL_DATA) ./files/qca-nss-ecm.uci $(1)/etc/config/ecm
 	$(INSTALL_DATA) ./files/qca-nss-ecm.defaults $(1)/etc/uci-defaults/99-qca-nss-ecm
 	$(INSTALL_BIN) ./files/qca-nss-ecm.sysctl $(1)/etc/sysctl.d/qca-nss-ecm.conf
-	echo 'net.netfilter.nf_conntrack_max=8192' >> $(1)/etc/sysctl.d/qca-nss-ecm.conf
 endef
 
 EXTRA_CFLAGS+=-I$(STAGING_DIR)/usr/include/qca-nss-drv
@@ -70,12 +69,6 @@ ECM_MAKE_OPTS+= ECM_FRONT_END_NSS_ENABLE=y \
 		ECM_CLASSIFIER_PCC_ENABLE=n \
 		ECM_BAND_STEERING_ENABLE=n \
 		ECM_INTERFACE_PPPOE_ENABLE=y
-endif
-
-ifeq ($(CONFIG_TARGET_BOARD), "ipq807x")
-    SOC="ipq807x_64"
-else ifeq ($(CONFIG_TARGET_BOARD), "ipq60xx")
-    SOC="ipq60xx_64"
 endif
 
 define Build/InstallDev
